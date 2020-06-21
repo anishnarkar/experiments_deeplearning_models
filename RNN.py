@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 # coding: utf-8
-
-# In[1]:
-
-
 from __future__ import unicode_literals, print_function, division
 from io import open
 import glob
 import os
+import torch
+import torch.nn as nn
+import time
+import math
+import random
+
 
 def findFiles(path): return glob.glob(path)
 
@@ -46,12 +48,6 @@ for filename in findFiles('data/names/*.txt'):
 
 n_categories = len(all_categories)
 
-
-# In[2]:
-
-
-import torch
-
 # Find letter index from all_letters, e.g. "a" = 0
 def letterToIndex(letter):
     return all_letters.find(letter)
@@ -75,12 +71,7 @@ print(letterToTensor('J'))
 print(lineToTensor('Jones').size())
 
 
-# In[3]:
-
-
 # Creating Network
-
-import torch.nn as nn
 
 class RNN(nn.Module):
     def __init__(self, input_size, hidden_size, output_size):
@@ -106,16 +97,10 @@ n_hidden = 128
 rnn = RNN(n_letters, n_hidden, n_categories)
 
 
-# In[4]:
-
-
 input = letterToTensor('A')
 hidden =torch.zeros(1, n_hidden)
 
 output, next_hidden = rnn(input, hidden)
-
-
-# In[5]:
 
 
 input = lineToTensor('Albert')
@@ -123,9 +108,6 @@ hidden = torch.zeros(1, n_hidden)
 
 output, next_hidden = rnn(input[0], hidden)
 print(output)
-
-
-# In[6]:
 
 
 # Preparing for training 
@@ -136,12 +118,6 @@ def categoryFromOutput(output):
     return all_categories[category_i], category_i
 
 print(categoryFromOutput(output))
-
-
-# In[7]:
-
-
-import random
 
 def randomChoice(l):
     return l[random.randint(0, len(l) - 1)]
@@ -156,9 +132,6 @@ def randomTrainingExample():
 for i in range(10):
     category, line, category_tensor, line_tensor = randomTrainingExample()
     print('category =', category, '/ line =', line)
-
-
-# In[8]:
 
 
 # Training the network
@@ -196,17 +169,9 @@ def train(category_tensor, line_tensor):
 
     return output, loss.item()
 
-
-# In[9]:
-
-
-import time
-import math
-
 n_iters = 100000
 print_every = 5000
 plot_every = 1000
-
 
 
 # Keep track of losses for plotting
@@ -237,11 +202,7 @@ for iter in range(1, n_iters + 1):
     if iter % plot_every == 0:
         all_losses.append(current_loss / plot_every)
         current_loss = 0
-
-
-# In[10]:
-
-
+        
 # Evaluating the result
 
 # Keep track of correct guesses in a confusion matrix
@@ -269,10 +230,6 @@ for i in range(n_confusion):
 for i in range(n_categories):
     confusion[i] = confusion[i] / confusion[i].sum()
 
-
-# In[ ]:
-
-
 # Testing
 
 def predict(input_line, n_predictions=3):
@@ -292,4 +249,3 @@ def predict(input_line, n_predictions=3):
 
 predict('Satoshi')
 predict('Ash')
-
