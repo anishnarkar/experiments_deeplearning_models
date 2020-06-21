@@ -16,5 +16,6 @@ Run these on GPU, refer https://github.com/anishnarkar/GPU-Setup to solve any is
 
 #### References
 [1] https://pytorch.org/tutorials/beginner/finetuning_torchvision_models_tutorial.html -> CNN
-[2] https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html
+
+[2] https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html -> RNN
 
