@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
 from __future__ import print_function
 from __future__ import division
 import torch
@@ -17,13 +14,9 @@ import time
 import os
 import copy
 
-
-# In[3]:
-
-
 # Top level data directory. Here we assume the format of the directory conforms
 #   to the ImageFolder structure
-data_dir = 'hymenoptera_data'
+data_dir = 'data'
 
 # Models to choose from [resnet, alexnet, vgg, squeezenet, densenet, inception]
 model_name = ['resnet', 'alexnet', 'vgg', 'squeezenet', 'densenet', 'inception']
@@ -40,10 +33,6 @@ num_epochs = 15
 # Flag for feature extracting. When False, we finetune the whole model,
 #   when True we only update the reshaped layer params
 feature_extract = True
-
-
-# In[4]:
-
 
 def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_inception=False):
     since = time.time()
@@ -125,18 +114,10 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_ince
     model.load_state_dict(best_model_wts)
     return model, val_acc_history
 
-
-# In[5]:
-
-
 def set_parameter_requires_grad(model, feature_extracting):
     if feature_extracting:
         for param in model.parameters():
             param.requires_grad = False
-
-
-# In[6]:
-
 
 def initialize_model(model_name, num_classes, feature_extract, use_pretrained=True):
     # Initialize these variables which will be set in this if statement. Each of these
@@ -209,17 +190,8 @@ def initialize_model(model_name, num_classes, feature_extract, use_pretrained=Tr
 
     return model_ft, input_size
 
-
-
-# In[8]:
-
-
 # Detect if we have a GPU available
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-
-# In[ ]:
-
 
 # Iterate through the all the models
 
@@ -284,22 +256,3 @@ for current_model in model_name:
 
     model_fit_explain = model_fit_explain.append(model_ft)
     histogram_explain = histogram_explain.append(hist)
-
-
-# In[13]:
-
-
-
-
-
-# In[12]:
-
-
-model_ft
-
-
-# In[ ]:
-
-
-
-
