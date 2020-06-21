@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
 import math
 import torch
 import torch.nn as nn
@@ -50,10 +47,6 @@ class TransformerModel(nn.Module):
         output = self.decoder(output)
         return output
 
-
-# In[2]:
-
-
 class PositionalEncoding(nn.Module):
 
     def __init__(self, d_model, dropout=0.1, max_len=5000):
@@ -71,9 +64,6 @@ class PositionalEncoding(nn.Module):
     def forward(self, x):
         x = x + self.pe[:x.size(0), :]
         return self.dropout(x)
-
-
-# In[5]:
 
 
 # Load and batch data
@@ -103,12 +93,8 @@ val_data = batchify(val_txt, eval_batch_size)
 test_data = batchify(test_txt, eval_batch_size)
 
 
-# In[10]:
-
-
 # Generate Input-Output Sequence
 bptt = 35
-
 def get_batch(source, i):
     seq_len = min(bptt, len(source) - 1 - i)
     data = source[i:i+seq_len]
@@ -116,11 +102,7 @@ def get_batch(source, i):
     return data, target
 
 
-# In[7]:
-
-
 # Initiate an instance
-
 ntokens = len(TEXT.vocab.stoi) # the size of vocabulary
 emsize = 200 # embedding dimension
 nhid = 200 # the dimension of the feedforward network model in nn.TransformerEncoder
@@ -128,10 +110,6 @@ nlayers = 2 # the number of nn.TransformerEncoderLayer in nn.TransformerEncoder
 nhead = 2 # the number of heads in the multiheadattention models
 dropout = 0.2 # the dropout value
 model = TransformerModel(ntokens, emsize, nhead, nhid, nlayers, dropout).to(device)
-
-
-# In[8]:
-
 
 # Run the model 
 
@@ -181,10 +159,6 @@ def evaluate(eval_model, data_source):
             total_loss += len(data) * criterion(output_flat, targets).item()
     return total_loss / (len(data_source) - 1)
 
-
-# In[ ]:
-
-
 best_val_loss = float("inf")
 epochs = 3 # The number of epochs
 best_model = None
@@ -205,10 +179,6 @@ for epoch in range(1, epochs + 1):
 
     scheduler.step()
 
-
-# In[ ]:
-
-
 # Evaluate the model
 
 test_loss = evaluate(best_model, test_data)
@@ -216,10 +186,3 @@ print('=' * 89)
 print('| End of training | test loss {:5.2f} | test ppl {:8.2f}'.format(
     test_loss, math.exp(test_loss)))
 print('=' * 89)
-
-
-# In[ ]:
-
-
-
-
