@@ -1,7 +1,6 @@
 ## Framework experimented include
 
 ### 1. CNN
-#### Models
 1. Resnet18
 2. Alexnet
 3. VGG11
